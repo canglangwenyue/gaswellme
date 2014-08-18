@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<include file="struts-default.xml" />
+	<constant name="struts.server.static.browserCache" value="false" />
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<package name="gaswellme" extends="struts-default">
+		<action name="gs_showAction" class="com.gaswell.action.gs_showAction">
+			<result name="list">/test.jsp</result>
+		</action>
+		<action name="getTreeNodedata" class="edu.njupt.zhb.ztree.action.ZTreeDemoAction" method="getTreeNodedata">
+		<result type="httpheader"></result>
+		</action>
+		<action name="getNodesDataById" class="edu.njupt.zhb.ztree.action.ZTreeDemoAction" method="getNodesDataById">
+		<result type="httpheader"></result>
+		</action>
+	</package>
+</struts>
+
+

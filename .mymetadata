@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="gaswellme"
+  id="myeclipse.1401354042075"
+  context-root="/gaswellme"
+  j2ee-spec="5.0"
+  archive="gaswellme.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
