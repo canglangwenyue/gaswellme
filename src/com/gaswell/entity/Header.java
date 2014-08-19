@@ -94,10 +94,10 @@ public class Header extends BodyBase {
 		header.setDeviceID(tempDevice);
 		System.arraycopy(in, 22, temp, 0, 2);
 		header.setMsgNumber(new BigInteger(temp).shortValue());
-		 System.arraycopy(in, 24, temp, 0, 2);
-		 header.totalPackagNumber = new BigInteger(temp).shortValue();
-		 System.arraycopy(in, 26, temp, 0, 2);
-		 header.packageIndex = new BigInteger(temp).shortValue();
+		System.arraycopy(in, 24, temp, 0, 2);
+		header.totalPackagNumber = new BigInteger(temp).shortValue();
+		System.arraycopy(in, 26, temp, 0, 2);
+		header.packageIndex = new BigInteger(temp).shortValue();
 		return header;
 	}
 

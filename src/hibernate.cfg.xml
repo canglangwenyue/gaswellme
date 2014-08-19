@@ -5,7 +5,9 @@
 	<property name="hibernate.dialect">
 		org.hibernate.dialect.MySQLDialect
 	</property>
-	<property name="connection.url">jdbc:mysql://localhost:3307/oil_work</property>
+	<property name="connection.url">
+		jdbc:mysql://localhost:3307/oil_work
+	</property>
 	<property name="connection.username">root</property>
 	<property name="connection.password">cwj1019</property>
 	<property name="connection.driver_class">
@@ -13,8 +15,11 @@
 	</property>
 	<property name="show_sql">true</property>
 	<property name="myeclipse.connection.profile">Mysql JDBC</property>
-	<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+	<property name="dialect">
+		org.hibernate.dialect.MySQLDialect
+	</property>
 	<mapping class="com.gaswell.entity.gw_show" />
+	<mapping class="com.gaswell.entity.registerEntity" />
 
 </session-factory>
 </hibernate-configuration>

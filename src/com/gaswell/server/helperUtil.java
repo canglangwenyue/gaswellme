@@ -1,7 +1,5 @@
 package com.gaswell.server;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 
 public class helperUtil {
 
@@ -10,7 +8,7 @@ public class helperUtil {
 
 		byte b[] = temp.getBytes();// String转换为byte[]
 
-		String t = new String(b);// byte[]转换为String
+		new String(b);
 		return null;
 
 	}

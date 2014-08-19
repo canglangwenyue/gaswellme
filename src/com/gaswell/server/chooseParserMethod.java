@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 
 import com.gaswell.entity.Header;
 import com.gaswell.entity.dataReport;
+import com.gaswell.entity.picture;
+import com.gaswell.entity.registerEntity;
 import com.gaswell.util.baseLoger;
 import com.gaswell.util.parserUtil;
 
@@ -36,11 +38,15 @@ public class chooseParserMethod {
 		// case 0x0001:
 		// body = paserGeneralResponseMessage(bodyByte);
 		// break;
-		// case (short) 0x8801:
-		// getMedia(bodyByte, header.totalPackagNumber, header.packageIndex);
-		// break;
+		case (short) 0x8801:
+			picture.getMedia(bodyByte, header.getTotalPackagNumber(),
+					header.getPackageIndex());
+			break;
 		case 0x0200:
 			dataReport.paserDataReport(bodyByte);
+			break;
+		case 0x0100:
+			registerEntity.parserRegister(bodyByte);
 			break;
 		// 添加其他数据解析方法
 		default:
@@ -48,23 +54,25 @@ public class chooseParserMethod {
 		}
 		return true;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
-        String serverHost = "115.155.11.61";
-        int serverPort = 11011;
-        UdpServerSocket udpServerSocket = new UdpServerSocket(serverHost, serverPort);
-        
-        while (true) {
-            String info = udpServerSocket.receive();
-            log.info("received info's length: "+info.length());
-            new chooseParserMethod();
-            
-            byte[] in = info.getBytes("ISO-8859-1");
-            for (int i = 0; i < in.length; i++) {
-				System.out.print(in[i]+" ");
+		String serverHost = "115.155.11.61";
+		int serverPort = 11011;
+		UdpServerSocket udpServerSocket = new UdpServerSocket(serverHost,
+				serverPort);
+
+		while (true) {
+			String info = udpServerSocket.receive();
+			log.info("received info's length: " + info.length());
+			new chooseParserMethod();
+
+			byte[] in = info.getBytes("ISO-8859-1");
+			log.info("==" + in.length);
+			for (int i = 0; i < in.length; i++) {
+				System.out.print(in[i] + " ");
 			}
-    		chooseParserMethod.Paser(in);
-            
-        }
-    }
+			chooseParserMethod.Paser(in);
+
+		}
+	}
 }

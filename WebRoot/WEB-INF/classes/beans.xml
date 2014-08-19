@@ -37,6 +37,7 @@
 		<property name="packagesToScan">
 			<list>
 				<value>com.gaswell.entity.gw_show</value>
+				<value>com.gaswell.entity.registerEntity</value>
 			</list>
 		</property>
 
