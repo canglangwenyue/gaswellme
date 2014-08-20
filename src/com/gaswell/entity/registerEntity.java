@@ -1,5 +1,7 @@
 package com.gaswell.entity;
 
+import java.net.InetAddress;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.gaswell.dao.parseDao;
 import com.gaswell.dao.impl.parseDaoImpl;
+import com.gaswell.server.UdpServerSocket;
 import com.gaswell.util.baseLoger;
 
 @Entity
@@ -47,7 +50,9 @@ public class registerEntity {
 		this.equipmentId = equipmentId;
 	}
 
-	public static boolean parserRegister(byte[] in) throws Exception {
+	@SuppressWarnings("null")
+	public static boolean parserRegister(byte[] in, InetAddress adress, int port)
+			throws Exception {
 
 		byte[] temp = new byte[20];
 		parseDao dao = new parseDaoImpl();
@@ -61,9 +66,11 @@ public class registerEntity {
 
 		System.arraycopy(in, 20, temp, 0, 20);
 		reEntity.setEquipmentId(new String(temp, "ISO-8859-1"));
-		if (dao.checkUserExistsEquipmentId(reEntity.getEquipmentId())) {
+		log.info(adress + "=======" + port);
+		new UdpServerSocket();
+		if (dao.checkUserExistsEquipmentId(reEntity.getEquipmentId()))
 			dao.saveEntity(reEntity);
-		} else {
+		else {
 			return false;
 		}
 

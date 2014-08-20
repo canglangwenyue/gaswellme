@@ -29,6 +29,9 @@ public class UdpServerSocket {
 
 	private String orgIp;
 
+	public UdpServerSocket() {
+	}
+
 	/**
 	 * 构造函数，绑定主机和端口.
 	 * 
@@ -106,12 +109,12 @@ public class UdpServerSocket {
 	 *            回应报文
 	 * @throws IOException
 	 */
-	public final void response(String info) throws IOException {
-		System.out.println("客户端地址 : " + packet.getAddress().getHostAddress()
-				+ ",端口：" + packet.getPort());
+	public void response(byte[] info) throws IOException {
+		// System.out.println("客户端地址 : " + packet.getAddress().getHostAddress()
+		// + ",端口：" + packet.getPort());
 		DatagramPacket dp = new DatagramPacket(buffer, buffer.length,
 				packet.getAddress(), packet.getPort());
-		dp.setData(info.getBytes());
+		dp.setData(info);
 		ds.send(dp);
 	}
 

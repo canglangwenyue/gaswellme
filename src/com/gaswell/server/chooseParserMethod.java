@@ -1,5 +1,7 @@
 package com.gaswell.server;
 
+import java.net.InetAddress;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -12,8 +14,13 @@ import com.gaswell.util.parserUtil;
 
 public class chooseParserMethod {
 
+	static boolean registerResult = false;
 	static parserUtil pUtil = new parserUtil();
 	static Logger log = LogManager.getLogger(baseLoger.class);
+	static byte[] registerSuccess = { (byte) 0x7e, (byte) 0x00, (byte) 0x00,
+			(byte) 0x00, (byte) 0x00, (byte) 0x7e };
+	static byte[] registerFail = { (byte) 0x7e, (byte) 0x00, (byte) 0x00,
+			(byte) 0x01, (byte) 0x00, (byte) 0x7e };
 
 	/**
 	 * 对外接口，数据解析
@@ -24,7 +31,8 @@ public class chooseParserMethod {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean Paser(byte[] in) throws Exception {
+	public static boolean Paser(byte[] in, InetAddress adress, int port)
+			throws Exception {
 		byte[] msg = parserUtil.getMessage(in);
 		if (msg == null)
 			return false;
@@ -47,7 +55,8 @@ public class chooseParserMethod {
 			dataReport.paserDataReport(bodyByte);
 			break;
 		case 0x0100:
-			registerEntity.parserRegister(bodyByte);
+			registerResult = registerEntity.parserRegister(bodyByte, adress,
+					port);
 			break;
 		// 添加其他数据解析方法
 		default:
@@ -64,7 +73,10 @@ public class chooseParserMethod {
 
 		while (true) {
 			String info = udpServerSocket.receive();
+			InetAddress adress = udpServerSocket.getResponseAddress();
+			int port = udpServerSocket.getResponsePort();
 			log.info("received info's length: " + info.length());
+			log.info(adress + "" + port);
 			new chooseParserMethod();
 
 			byte[] in = info.getBytes("ISO-8859-1");
@@ -72,7 +84,13 @@ public class chooseParserMethod {
 			for (int i = 0; i < in.length; i++) {
 				System.out.print(in[i] + " ");
 			}
-			chooseParserMethod.Paser(in);
+			chooseParserMethod.Paser(in, adress, port);
+
+			if (registerResult == true) {
+				udpServerSocket.response(registerSuccess);
+			} else {
+				udpServerSocket.response(registerFail);
+			}
 
 		}
 	}
