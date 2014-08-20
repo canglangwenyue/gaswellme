@@ -28,7 +28,7 @@ public class gwShowImplTest {
 	public void testAdd() throws Exception {
 		gwShow gw = new gwShowImpl();
 		gw_show gh = new gw_show();
-		gh.setName("fjhahjflk");
+		gh.setName("金秀贤");
 		gw.add(gh);
 
 	}

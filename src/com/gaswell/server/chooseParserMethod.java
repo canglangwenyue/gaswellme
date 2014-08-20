@@ -22,8 +22,9 @@ public class chooseParserMethod {
 	 * @param header
 	 * @param body
 	 * @return
+	 * @throws Exception
 	 */
-	public static boolean Paser(byte[] in) {
+	public static boolean Paser(byte[] in) throws Exception {
 		byte[] msg = parserUtil.getMessage(in);
 		if (msg == null)
 			return false;

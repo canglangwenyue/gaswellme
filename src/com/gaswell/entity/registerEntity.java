@@ -1,6 +1,5 @@
 package com.gaswell.entity;
 
-import javax.annotation.Resource;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,6 +8,7 @@ import javax.persistence.Table;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.gaswell.dao.parseDao;
 import com.gaswell.dao.impl.parseDaoImpl;
 import com.gaswell.util.baseLoger;
 
@@ -16,17 +16,7 @@ import com.gaswell.util.baseLoger;
 @Table(name = "registerentity")
 public class registerEntity {
 
-	public parseDaoImpl getDao() {
-		return dao;
-	}
-
-	@Resource(name = "parsedao")
-	public void setDao(parseDaoImpl dao) {
-		this.dao = dao;
-	}
-
 	private int id;
-	private static parseDaoImpl dao;
 
 	@Id
 	@GeneratedValue
@@ -38,40 +28,45 @@ public class registerEntity {
 		this.id = id;
 	}
 
-	private byte[] makerID;
-	private byte[] equipmentId;
+	private String makerID;
+	private String equipmentId;
 
-	public byte[] getMakerID() {
+	public String getMakerID() {
 		return makerID;
 	}
 
-	public void setMakerID(byte[] makerID) {
+	public void setMakerID(String makerID) {
 		this.makerID = makerID;
 	}
 
-	public byte[] getEquipmentId() {
+	public String getEquipmentId() {
 		return equipmentId;
 	}
 
-	public void setEquipmentId(byte[] equipmentId) {
+	public void setEquipmentId(String equipmentId) {
 		this.equipmentId = equipmentId;
 	}
 
-	public static registerEntity parserRegister(byte[] in) {
+	public static boolean parserRegister(byte[] in) throws Exception {
 
 		byte[] temp = new byte[20];
+		parseDao dao = new parseDaoImpl();
 
 		Logger log = LogManager.getLogger(baseLoger.class);
 		log.info("register");
 		registerEntity reEntity = new registerEntity();
 		System.arraycopy(in, 0, temp, 0, 20);
 
-		reEntity.setMakerID(temp);
+		reEntity.setMakerID(new String(temp, "ISO-8859-1"));
 
 		System.arraycopy(in, 20, temp, 0, 20);
+		reEntity.setEquipmentId(new String(temp, "ISO-8859-1"));
+		if (dao.checkUserExistsEquipmentId(reEntity.getEquipmentId())) {
+			dao.saveEntity(reEntity);
+		} else {
+			return false;
+		}
 
-		reEntity.setEquipmentId(temp);
-		dao.saveEntity(reEntity);
-		return null;
+		return true;
 	}
 }

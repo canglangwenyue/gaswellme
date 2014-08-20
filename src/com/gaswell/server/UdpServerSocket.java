@@ -13,9 +13,10 @@ import org.apache.log4j.Logger;
 import com.gaswell.util.baseLoger;
 
 /**
- * udp socket 
+ * udp socket
+ * 
  * @author canglangwenyue
- *
+ * 
  */
 public class UdpServerSocket {
 	private final byte[] buffer = new byte[1024];
@@ -93,7 +94,8 @@ public class UdpServerSocket {
 		packet = new DatagramPacket(buffer, buffer.length);
 		ds.receive(packet);
 		orgIp = packet.getAddress().getHostAddress();
-		String info = new String(packet.getData(), 0, packet.getLength(), "ISO-8859-1");
+		String info = new String(packet.getData(), 0, packet.getLength(),
+				"ISO-8859-1");
 		return info;
 	}
 
@@ -158,5 +160,5 @@ public class UdpServerSocket {
 			ex.printStackTrace();
 		}
 	}
-	
+
 }

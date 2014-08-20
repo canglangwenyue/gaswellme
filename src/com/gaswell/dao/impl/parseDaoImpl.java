@@ -12,14 +12,13 @@ import com.gaswell.util.hibernateutil;
 
 @Component("parsedao")
 @Resource(name = "sessionFactory")
-public class parseDaoImpl implements parseDao{
-	
+public class parseDaoImpl implements parseDao {
+
 	private SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
 
 	public void saveEntity(Object object) {
 		// TODO Auto-generated method stub
@@ -36,5 +35,23 @@ public class parseDaoImpl implements parseDao{
 		String picPath = btpu.saveImage(dataPic, gasWellName, "jpg");
 		return picPath;
 	}
-	
+
+	public boolean checkUserExistsEquipmentId(String EqId) {
+
+		SessionFactory factory = hibernateutil.getSessionFactory();
+		Session session = factory.openSession();
+		session.beginTransaction();
+
+		long count = (Long) session
+				.createQuery(
+						"select count(*) from registerEntity registerentity where registerentity.equipmentId = :EqId")
+				.setString("EqId", EqId).uniqueResult();
+		session.getTransaction().commit();
+		if (count > 0) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

@@ -27,17 +27,6 @@ public class baseDaoImpl implements baseDao {
 		SessionFactory factory = hibernateutil.getSessionFactory();
 		Session session = factory.openSession();
 		session.beginTransaction();
-		// gh.setLand_voltage("");
-		// gh.setName("");
-		// gh.setNstantaneous_flow("");
-		// gh.setOil_voltage("");
-		// gh.setPower_voltage("");
-		// gh.setSwitch_status("");
-		// gh.setTao_voltage("");
-		// gh.setTemperature("");
-		// gh.setTime("");
-		// gh.setTotal_flow("");
-		// gh.setYd_flow("");
 
 		session.save(gh);
 		session.getTransaction().commit();
@@ -45,7 +34,6 @@ public class baseDaoImpl implements baseDao {
 	}
 
 	public void update(String name) {
-		// TODO Auto-generated method stub
 
 	}
 
