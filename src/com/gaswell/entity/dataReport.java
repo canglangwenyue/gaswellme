@@ -339,6 +339,9 @@ public class dataReport extends BodyBase {
 		data.setSystemPower(parserUtil.getFloat(temp));
 		System.arraycopy(in, 6, temp, 0, 4);
 		data.setRemainBytes(temp);
+		Logger log = LogManager.getLogger(baseLoger.class);
+		log.info("红外报警标志：" + data.getRedAlarmTag() + "系统电源电压:"
+				+ data.getSystemPower());
 
 		// 压力数据帧
 		data.setPressureFpsType(in[10]);
@@ -347,7 +350,6 @@ public class dataReport extends BodyBase {
 				.getPresureNumber()];
 		temp = new byte[data.getPresureNumber() * 5 + 2];
 		System.arraycopy(in, 10, temp, 0, (data.getPresureNumber() * 5 + 2));
-		Logger log = LogManager.getLogger(baseLoger.class);
 		log.info("pressure message:");
 		for (int i = 0; i < temp.length; i++) {
 			System.out.print(temp[i] + " ");
@@ -365,66 +367,83 @@ public class dataReport extends BodyBase {
 			} else if (temp[5 * i + 2] == 0) {
 				System.out.println("无效的压力表数据");
 			}
+			log.info("压力表总数：" + data.getPresureNumber() + "压力表" + i + ":"
+					+ pressureDataReports[i].getPressureData());
 		}
 
-		//气相流量数据帧
-		data.setGasFpsType(in[10+data.getPresureNumber()*5+2]);
-		data.setGasNumber(in[10+data.getPresureNumber()*5+2]);
+		// 气相流量数据帧
+		data.setGasFpsType(in[10 + data.getPresureNumber() * 5 + 2]);
+		data.setGasNumber(in[10 + data.getPresureNumber() * 5 + 3]);
 		dataReport[] gasDataReport = new dataReport[data.getGasNumber()];
-		temp = new byte[data.getGasNumber()*25+2];
-		System.arraycopy(in, (10+data.getPresureNumber()*5+2), temp, 0, data.getGasNumber()*25+2);
+		temp = new byte[data.getGasNumber() * 25 + 2];
+		System.arraycopy(in, (10 + data.getPresureNumber() * 5 + 2), temp, 0,
+				data.getGasNumber() * 25 + 2);
 		log.info("\n");
 		log.info("Gas message:");
 		for (int i = 0; i < temp.length; i++) {
 			System.out.print(temp[i] + " ");
 		}
 		for (int i = 0; i < data.getGasNumber(); i++) {
-			if (temp[25*i+2]==1) {
-				for (int j = 0; j < gasDataReport.length; j++) 
+			if (temp[25 * i + 2] == 1) {
+				for (int j = 0; j < gasDataReport.length; j++)
 					gasDataReport[j] = new dataReport();
-				gasDataReport[i].setPressureJudageEffective(temp[25*i+2]);
+				gasDataReport[i].setPressureJudageEffective(temp[25 * i + 2]);
 				floatbytes = new byte[4];
 				doublebytes = new byte[8];
-				System.arraycopy(temp, 25*i+3, floatbytes, 0, 4);
-				gasDataReport[i].setGasPressure(parserUtil.getFloat(floatbytes)/1000);
-				System.arraycopy(temp, 25*i+7, floatbytes, 0, 4);
-				gasDataReport[i].setGasTemperature(parserUtil.getFloat(floatbytes));
-				System.arraycopy(temp, 25*i+11, floatbytes, 0, 4);
-				gasDataReport[i].setGasInstantFlow(parserUtil.getFloat(floatbytes));
-				System.arraycopy(temp, 25*i+15, floatbytes, 0, 4);
-				gasDataReport[i].setGasWorkflow(parserUtil.getFloat(floatbytes));
-				System.arraycopy(temp, 25*i+19, doublebytes, 0, 8);
-				gasDataReport[i].setGasTotalFlow(parserUtil.getDouble(doublebytes));
-			}else if (temp[25*i+2]==1) {
+				System.arraycopy(temp, 25 * i + 3, floatbytes, 0, 4);
+				gasDataReport[i]
+						.setGasPressure(parserUtil.getFloat(floatbytes) / 1000);
+				System.arraycopy(temp, 25 * i + 7, floatbytes, 0, 4);
+				gasDataReport[i].setGasTemperature(parserUtil
+						.getFloat(floatbytes));
+				System.arraycopy(temp, 25 * i + 11, floatbytes, 0, 4);
+				gasDataReport[i].setGasInstantFlow(parserUtil
+						.getFloat(floatbytes));
+				System.arraycopy(temp, 25 * i + 15, floatbytes, 0, 4);
+				gasDataReport[i]
+						.setGasWorkflow(parserUtil.getFloat(floatbytes));
+				System.arraycopy(temp, 25 * i + 19, doublebytes, 0, 8);
+				gasDataReport[i].setGasTotalFlow(parserUtil
+						.getDouble(doublebytes));
+			} else if (temp[25 * i + 2] == 1) {
 				System.out.println("无效的气相流量数据帧数据");
 			}
 		}
-		
-		//截断阀数据帧
-		data.setBlockFpsType(in[10+data.getPresureNumber()*5+2+data.getGasNumber()*25+2]);
-		data.setBlockNumber(in[10+data.getPresureNumber()*5+2+data.getGasNumber()*25+3]);
-		dataReport[]blockDataReport = new dataReport[data.getBlockNumber()];
-		for (int i = 0; i < blockDataReport.length; i++) 
+
+		// 截断阀数据帧
+		data.setBlockFpsType(in[10 + data.getPresureNumber() * 5 + 2
+				+ data.getGasNumber() * 25 + 2]);
+		data.setBlockNumber(in[10 + data.getPresureNumber() * 5 + 2
+				+ data.getGasNumber() * 25 + 3]);
+		dataReport[] blockDataReport = new dataReport[data.getBlockNumber()];
+		for (int i = 0; i < blockDataReport.length; i++)
 			blockDataReport[i] = new dataReport();
-			
-		temp = new byte[data.getBlockNumber()*2+2];
-		System.arraycopy(in,  (10+data.getPresureNumber()*5+2+data.getGasNumber()*25+2), temp, 0, data.getBlockNumber()*2+2);
+
+		temp = new byte[data.getBlockNumber() * 2 + 2];
+		System.arraycopy(in,
+				(10 + data.getPresureNumber() * 5 + 2 + data.getGasNumber()
+						* 25 + 2), temp, 0, data.getBlockNumber() * 2 + 2);
 		log.info("\n");
 		log.info("block message:");
 		for (int i = 0; i < temp.length; i++) {
 			System.out.print(temp[i] + " ");
 		}
 		for (int i = 0; i < data.getBlockNumber(); i++) {
-			blockDataReport[i].setBlockJudageEffective(temp[2*i+2]);
-			if (temp[2*i+2]==1) {
-				 blockDataReport[i].setBlockStatus(temp[2*i+3]);
-			}else if (temp[2*i+2]==0) {
-				 blockDataReport[i].setBlockStatus(temp[2*i+3]);
+			blockDataReport[i].setBlockJudageEffective(temp[2 * i + 2]);
+			if (temp[2 * i + 2] == 1) {
+				blockDataReport[i].setBlockStatus(temp[2 * i + 3]);
+			} else if (temp[2 * i + 2] == 0) {
+				blockDataReport[i].setBlockStatus(temp[2 * i + 3]);
 			}
+			log.info("流量计压力值个数：" + data.getGasNumber() + "**" + i
+					+ gasDataReport[i].getGasPressure() + "#"
+					+ gasDataReport[i].getGasTemperature() + "#"
+					+ gasDataReport[i].getGasInstantFlow() + "#"
+					+ gasDataReport[i].getGasWorkflow() + "#"
+					+ gasDataReport[i].getGasTotalFlow());
 		}
-		
-		
-		//气液两相流量数据帧
+
+		// 气液两相流量数据帧
 		return null;
 
 	}

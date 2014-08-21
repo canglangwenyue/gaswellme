@@ -19,7 +19,7 @@ import com.gaswell.util.baseLoger;
  * 
  */
 public class UdpServerSocket {
-	private final byte[] buffer = new byte[1024];
+	private final byte[] buffer = new byte[1800];
 
 	private DatagramSocket ds = null;
 

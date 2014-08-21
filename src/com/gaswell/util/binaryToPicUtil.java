@@ -11,19 +11,19 @@ import javax.imageio.ImageIO;
 
 public class binaryToPicUtil {
 
-	public static String saveImage(String data, String fileName, String type) {
+	public static String saveImage(byte[] data, String fileName, String type) {
 
-		String path = "C:/Users/wenyue/Desktop/";
+		String path = "C:/Users/C/Desktop/";
 		BufferedImage image = new BufferedImage(540, 960,
 				BufferedImage.TYPE_BYTE_BINARY);
 		ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 		String picName = path + fileName + getCurrentDateStr()  + "." + type;
 		try {
 			ImageIO.write(image, type, byteOutputStream);
-			byte[] bytes = hex2byte(data);
+//			byte[] bytes = hex2byte(data);
 			RandomAccessFile file = new RandomAccessFile(picName,
 					"rw");
-			file.write(bytes);
+			file.write(data);
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();

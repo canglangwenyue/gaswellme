@@ -32,8 +32,8 @@ public class parseDaoImpl implements parseDao {
 	public String editPic(String dataPic, String gasWellName) {
 		// TODO Auto-generated method stub
 		binaryToPicUtil btpu = new binaryToPicUtil();
-		String picPath = btpu.saveImage(dataPic, gasWellName, "jpg");
-		return picPath;
+//		String picPath = btpu.saveImage(dataPic, gasWellName, "jpg");
+		return null;
 	}
 
 	public boolean checkUserExistsEquipmentId(String EqId) {

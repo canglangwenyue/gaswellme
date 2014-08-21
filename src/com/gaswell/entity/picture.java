@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import com.gaswell.dao.BodyBase;
+import com.gaswell.util.binaryToPicUtil;
 
 public class picture extends BodyBase {
 
@@ -101,24 +102,32 @@ public class picture extends BodyBase {
 	 */
 	public static void getMedia(byte[] in, int totalNum, int currentNum) {
 		picture picPackage = new picture();
-		byte[] temp = new byte[2];
-		System.arraycopy(in, 0, temp, 0, 2);
+		System.out.println("进入getMedia");
+		byte[] temp = new byte[4];
+		System.arraycopy(in, 0, temp, 0, 4);
 		picPackage.setMediaID(new BigInteger(temp).shortValue());
-		System.arraycopy(in, 8, temp, 0, 2);
+		byte[] intTemp = new byte[2];
+		System.arraycopy(in, 8, intTemp, 0, 2);
 		picPackage
-				.setReceivedMediaDataLength(new BigInteger(temp).shortValue());
+				.setReceivedMediaDataLength(new BigInteger(intTemp).shortValue());
+		System.out.println("消息体长度"+picPackage.getReceivedMediaDataLength());
 		if (picPackage.getMediaID() != currentMediaID) {
+			System.out.println(picPackage.getMediaID()+"========"+currentMediaID);
 			pic.clear();
 			currentMediaID = (short) picPackage.getMediaID();
-		} else {
+			System.out.println(currentMediaID);
+		} 
+//		else {
 
+			System.out.println(picPackage.getMediaID()+"========"+currentMediaID);
 			picPackage.setIndex(currentNum);
 			picPackage.setMediaData(new byte[picPackage
 					.getReceivedMediaDataLength()]);
 			System.arraycopy(in, 10, picPackage.getMediaData(), 0,
 					picPackage.getReceivedMediaDataLength());
 			pic.add(picPackage);
-		}
+//		}
+		System.out.println("pic.szze()"+pic.size()+"totalnum"+totalNum);
 		if (pic.size() == totalNum) {
 			int totalSize = 0;
 			for (int i = 0; i < pic.size(); i++)
@@ -133,7 +142,12 @@ public class picture extends BodyBase {
 					currentIndex += pic.get(i).getMediaData().length;
 				}
 			}
+			for (int i = 0; i < media.length; i++) {
+				System.out.println(media[i]);
+			}
+			System.out.println("写入数据库");
 			// 调用多媒体存储函数
+			binaryToPicUtil.saveImage(media, "teststst", "jpg");
 
 		}
 	}

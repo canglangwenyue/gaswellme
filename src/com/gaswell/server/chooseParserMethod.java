@@ -15,6 +15,7 @@ import com.gaswell.util.parserUtil;
 public class chooseParserMethod {
 
 	static boolean registerResult = false;
+	static boolean registerJudage = false;
 	static parserUtil pUtil = new parserUtil();
 	static Logger log = LogManager.getLogger(baseLoger.class);
 	static byte[] registerSuccess = { (byte) 0x7e, (byte) 0x00, (byte) 0x00,
@@ -47,7 +48,7 @@ public class chooseParserMethod {
 		// case 0x0001:
 		// body = paserGeneralResponseMessage(bodyByte);
 		// break;
-		case (short) 0x8801:
+		case (short) 0x0801:
 			picture.getMedia(bodyByte, header.getTotalPackagNumber(),
 					header.getPackageIndex());
 			break;
@@ -57,6 +58,7 @@ public class chooseParserMethod {
 		case 0x0100:
 			registerResult = registerEntity.parserRegister(bodyByte, adress,
 					port);
+			registerJudage = true;
 			break;
 		// 添加其他数据解析方法
 		default:
@@ -66,14 +68,15 @@ public class chooseParserMethod {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String serverHost = "115.155.11.61";
-		int serverPort = 11011;
+		String serverHost = "219.245.64.3";
+		int serverPort = 30001;
 		UdpServerSocket udpServerSocket = new UdpServerSocket(serverHost,
 				serverPort);
 
 		while (true) {
 			String info = udpServerSocket.receive();
 			InetAddress adress = udpServerSocket.getResponseAddress();
+			adress.getHostAddress();
 			int port = udpServerSocket.getResponsePort();
 			log.info("received info's length: " + info.length());
 			log.info(adress + "" + port);
@@ -86,10 +89,18 @@ public class chooseParserMethod {
 			}
 			chooseParserMethod.Paser(in, adress, port);
 
-			if (registerResult == true) {
-				udpServerSocket.response(registerSuccess);
-			} else {
-				udpServerSocket.response(registerFail);
+			// if (registerResult == true) {
+			// udpServerSocket.response(registerSuccess);
+			// } else {
+			// udpServerSocket.response(registerFail);
+			// }
+			if (registerJudage) {
+				if (registerResult == true) {
+					udpServerSocket.response(registerSuccess);
+				} else {
+					udpServerSocket.response(registerFail);
+				}
+				registerJudage = false;
 			}
 
 		}
