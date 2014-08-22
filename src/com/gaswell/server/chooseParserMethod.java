@@ -6,6 +6,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.gaswell.entity.Header;
+import com.gaswell.entity.clientHeartBeat;
 import com.gaswell.entity.dataReport;
 import com.gaswell.entity.picture;
 import com.gaswell.entity.registerEntity;
@@ -22,6 +23,7 @@ public class chooseParserMethod {
 			(byte) 0x00, (byte) 0x00, (byte) 0x7e };
 	static byte[] registerFail = { (byte) 0x7e, (byte) 0x00, (byte) 0x00,
 			(byte) 0x01, (byte) 0x00, (byte) 0x7e };
+	static boolean choice = false;
 
 	/**
 	 * 对外接口，数据解析
@@ -60,6 +62,9 @@ public class chooseParserMethod {
 					port);
 			registerJudage = true;
 			break;
+		case 0x0002:
+			choice = clientHeartBeat.dealClientHeartBeat(adress, port);
+			break;
 		// 添加其他数据解析方法
 		default:
 			return false;
@@ -76,7 +81,7 @@ public class chooseParserMethod {
 		while (true) {
 			String info = udpServerSocket.receive();
 			InetAddress adress = udpServerSocket.getResponseAddress();
-			adress.getHostAddress();
+			byte[] ipAddress = adress.getAddress();
 			int port = udpServerSocket.getResponsePort();
 			log.info("received info's length: " + info.length());
 			log.info(adress + "" + port);
@@ -101,6 +106,13 @@ public class chooseParserMethod {
 					udpServerSocket.response(registerFail);
 				}
 				registerJudage = false;
+				
+			}
+			
+			if (choice) {
+				byte[] heartBytes= {(byte)0x7e,(byte)0x00,(byte)0x02,(byte)0x00,(byte)0x00,(byte)0x7e};
+				udpServerSocket.response(heartBytes);
+				choice = false;
 			}
 
 		}

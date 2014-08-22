@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import com.gaswell.dao.parseDao;
-import com.gaswell.util.binaryToPicUtil;
 import com.gaswell.util.hibernateutil;
 
 @Component("parsedao")
@@ -27,13 +26,6 @@ public class parseDaoImpl implements parseDao {
 		session.beginTransaction();
 		session.save(object);
 		session.getTransaction().commit();
-	}
-
-	public String editPic(String dataPic, String gasWellName) {
-		// TODO Auto-generated method stub
-		binaryToPicUtil btpu = new binaryToPicUtil();
-//		String picPath = btpu.saveImage(dataPic, gasWellName, "jpg");
-		return null;
 	}
 
 	public boolean checkUserExistsEquipmentId(String EqId) {
