@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <%
 
    Class.forName("org.gjt.mm.mysql.Driver").newInstance();
-   Connection con=java.sql.DriverManager.getConnection("jdbc:mysql://127.0.0.1/oil_work","root","bjx719519");
+   Connection con=java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3307/oil_work","root","cwj1019");
    Statement stmt=con.createStatement();
     ResultSet rst=stmt.executeQuery("select * from gw_show;");
     while(rst.next())

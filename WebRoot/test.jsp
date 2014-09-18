@@ -20,8 +20,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body onload="javascript:location.href='gs_showAction.action'">
     <s:iterator value ="gsList">
-    	<s:property value="id"/>
-    	<s:property value="name"/>
+    	
+    	<table>
+    	<s:property value="name"/> 
+    	<s:property value="time"/>
+    	<s:property value="power_voltage"/>
+    	<s:property value="oil_voltage"/>
+    	<s:property value="tao_voltage"/>
+    	<s:property value="land_voltage"/>
+    	<s:property value="temperature"/>
+    	<s:property value="yd_flow"/>
+    	<s:property value="total_flow"/>
+    	<s:property value="nstantaneous_flow"/>
+    	<s:property value="switch_status"/>
+    	</table>
     </s:iterator> 
   </body>
 </html>

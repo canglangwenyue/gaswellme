@@ -102,32 +102,33 @@ public class picture extends BodyBase {
 	 */
 	public static void getMedia(byte[] in, int totalNum, int currentNum) {
 		picture picPackage = new picture();
-		System.out.println("进入getMedia");
 		byte[] temp = new byte[4];
 		System.arraycopy(in, 0, temp, 0, 4);
 		picPackage.setMediaID(new BigInteger(temp).shortValue());
 		byte[] intTemp = new byte[2];
 		System.arraycopy(in, 8, intTemp, 0, 2);
-		picPackage
-				.setReceivedMediaDataLength(new BigInteger(intTemp).shortValue());
-		System.out.println("消息体长度"+picPackage.getReceivedMediaDataLength());
+		picPackage.setReceivedMediaDataLength(new BigInteger(intTemp)
+				.shortValue());
+		System.out.println("消息体长度" + picPackage.getReceivedMediaDataLength());
 		if (picPackage.getMediaID() != currentMediaID) {
-			System.out.println(picPackage.getMediaID()+"========"+currentMediaID);
+			System.out.println(picPackage.getMediaID() + "========"
+					+ currentMediaID);
 			pic.clear();
 			currentMediaID = (short) picPackage.getMediaID();
 			System.out.println(currentMediaID);
-		} 
-//		else {
+		}
+		// else {
 
-			System.out.println(picPackage.getMediaID()+"========"+currentMediaID);
-			picPackage.setIndex(currentNum);
-			picPackage.setMediaData(new byte[picPackage
-					.getReceivedMediaDataLength()]);
-			System.arraycopy(in, 10, picPackage.getMediaData(), 0,
-					picPackage.getReceivedMediaDataLength());
-			pic.add(picPackage);
-//		}
-		System.out.println("pic.szze()"+pic.size()+"totalnum"+totalNum);
+		System.out.println(picPackage.getMediaID() + "========"
+				+ currentMediaID);
+		picPackage.setIndex(currentNum);
+		picPackage.setMediaData(new byte[picPackage
+				.getReceivedMediaDataLength()]);
+		System.arraycopy(in, 10, picPackage.getMediaData(), 0,
+				picPackage.getReceivedMediaDataLength());
+		pic.add(picPackage);
+		// }
+		System.out.println("pic.szze()" + pic.size() + "totalnum" + totalNum);
 		if (pic.size() == totalNum) {
 			int totalSize = 0;
 			for (int i = 0; i < pic.size(); i++)

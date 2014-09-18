@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.gaswell.dao.gw_showDao;
 import com.gaswell.entity.gw_show;
 import com.gaswell.service.gwShow;
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,7 +17,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class gs_showAction extends ActionSupport {
 
 	private List<gw_show> gsList;
-	private final String msg = "canglangwenyue";
 	private gwShow dao;
 
 	public gwShow getDao() {
